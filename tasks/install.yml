@@ -1,6 +1,60 @@
 ---
-- include: DebianInst.yml
-  when: "ansible_os_family == 'Debian'"
+- name: Install Systems Requirements
+  apt:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - '{{ zookeeper_dependencies }}'
 
-- include: RedHatInst.yml
-  when: "ansible_os_family == 'RedHat'"
+- name: Create Distribution directory
+  file:
+    path: "{{ dist_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Add a zookeeper user
+  user:
+    name: zookeeper
+    comment: "Apache zookeeper Service"
+  register: create_zookeeper_user
+  until: create_zookeeper_user | success
+  retries: 5
+  delay: 2
+
+- name: Download Zookeeper package
+  get_url:
+    url: "{{ apache_mirror }}/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz"
+    dest: "/root/apache-zookeeper-{{ zookeeper_version }}.tar.gz"
+    mode: 0600
+    validate_certs: no
+  register: download_zookeeper
+  until: download_zookeeper | success
+  retries: 5
+  delay: 3
+
+- name: Extract Apache zookeeper
+  unarchive:
+    src: "/root/apache-zookeeper-{{ zookeeper_version }}.tar.gz"
+    dest: "{{ dist_dir }}"
+    creates: "{{ dist_dir }}/zookeeper-{{ zookeeper_version }}"
+    copy: no
+    owner: zookeeper
+  register: extract_zookeeper
+  until: extract_zookeeper | success
+  retries: 5
+  delay: 3
+
+- name: Link installed Apache zookeeper to /opt/zookeeper
+  file:
+    src: "{{ dist_dir }}/zookeeper-{{ zookeeper_version }}"
+    path: "{{ zookeeper_dir }}"
+    state: link
+
+- name: Create zookeeper data directory
+  file:
+    path: "{{ item }}"
+    owner: zookeeper
+    state: directory
+  with_items:
+    - "{{ zookeeper_data_dir }}"
+    - "{{ zookeeper_log_dir }}"

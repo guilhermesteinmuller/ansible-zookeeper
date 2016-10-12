@@ -9,15 +9,15 @@ initLimit=10
 # sending a request and getting an acknowledgement
 syncLimit=5
 # the directory where the snapshot is stored.
-dataDir=/var/lib/zookeeper
+dataDir={{ zookeeper_data_dir }}
 # Place the dataLogDir to a separate physical disc for better performance
 # dataLogDir=/disk2/zookeeper
 
 # the port at which the clients will connect
-clientPort={{zookeeper_client_port}}
+clientPort={{ zookeeper_client_port }}
 
 # Maximum number of clients that can connect from one client
-maxClientCnxns={{zookeeper_maxClientCnxns}}
+maxClientCnxns={{ zookeeper_maxClientCnxns }}
 
 # specify all zookeeper servers
 # The fist port is used by followers to connect to the leader
@@ -25,7 +25,7 @@ maxClientCnxns={{zookeeper_maxClientCnxns}}
 {% set zookeeper_hosts_list = zookeeper_hosts.split(',') %}
 
 {% for url in zookeeper_hosts_list %}
-server.{{loop.index0}}={{url.split(':')[0]}}:2888:3888
+server.{{ loop.index0 }}={{ url.split(':')[0] }}:2888:3888
 {% endfor %}
 
 # To avoid seeks ZooKeeper allocates space in the transaction log file in

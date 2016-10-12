@@ -10,10 +10,11 @@ User=root
 SyslogIdentifier=zookeeper
 WorkingDirectory={{ zookeeper_data_dir }}
 UMask=0027
-Environment="ZOOCFGDIR={{ zookeeper_conf_dir }}"
-Environment="ZOO_LOG_DIR={{zookeeper_log_dir}}"
-Environment="JMXLOCALONLY=false"
-Environment="ZOO_LOG4J_PROP=INFO,ROLLINGFILE"
+EnvironmentFile={{ zookeeper_dir }}/conf/environment
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/run/zookeeper
+ExecStartPre=/bin/chown -R zookeeper:zookeeper /var/run/zookeeper
+
 ExecStart={{ zookeeper_dir }}/bin/zkServer.sh start
 ExecStop={{ zookeeper_dir }}/bin/zkServer.sh stop
 ExecReload={{ zookeeper_dir }}/bin/zkServer.sh restart
@@ -21,3 +22,4 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
+
