@@ -7,8 +7,27 @@
     group: root
     mode: 0644
   notify:
-    - reload systemd
+    - Reload systemd
   when: ansible_service_mgr == 'systemd'
+
+- name: Copy Zookeeper init script
+  template:
+    src: zookeeper.upstart.conf.j2
+    dest: "/etc/init/zookeeper.conf"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  register: upstart_init
+  notify:
+    - restart zookeeper
+  when: ansible_service_mgr == 'upstart'
+
+- name: Reload init scripts
+  shell: |
+    initctl reload-configuration
+  when: upstart_init | changed
+  notify:
+    - restart zookeeper
 
 - name: Setup zoo.cfg
   template:
