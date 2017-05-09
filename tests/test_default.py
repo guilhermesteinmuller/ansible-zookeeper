@@ -13,7 +13,7 @@ def test_packages(Package, name, version):
     assert pkg.version.startswith(version)
 
 
-def test_monasca_agent_installed(File):
+def test_zookeeper_installed(File):
     f = File('/opt/zookeeper/bin/zkCli.sh')
 
     assert f.exists
@@ -22,7 +22,14 @@ def test_monasca_agent_installed(File):
 @pytest.mark.parametrize('service_name', [
     ('zookeeper'),
 ])
-def test_monasca_agent_service_enabled(Service, service_name):
+def test_zookeeper_service_enabled(Service, service_name):
     s = Service(service_name)
 
+    assert s.is_running
     assert s.is_enabled
+
+
+def test_zookeeper_is_running(Socket):
+    s = Socket('tcp://:::2181')
+
+    assert s.is_listening
