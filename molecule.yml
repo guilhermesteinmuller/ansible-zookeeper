@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+vagrant:
+  platforms:
+    - name: xenial64
+      box: xenial64
+      box_url: https://atlas.hashicorp.com/ubuntu/boxes/xenial64/versions/20170224.0.0/providers/virtualbox.box
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 768
+        cpus: 2
+  instances:
+    - name: ansible-zookeeper
+      ansible_groups:
+        - group1
+verifier:
+  name: testinfra

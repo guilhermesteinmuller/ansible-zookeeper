@@ -4,11 +4,5 @@
     name: zookeeper
     state: restarted
 
-#- name: Reload systemd
-#  systemd:
-#    daemon_reload: yes
-#  when: init_service == 'systemd'
-
 - name: Reload systemd
   command: systemctl daemon-reload
-

@@ -1,5 +1,5 @@
 ---
-- name: Copy Zookeeper Systemd service file
+- name: Install Zookeeper Systemd service file
   template:
     src: zookeeper.systemd.service.j2
     dest: /etc/systemd/system/zookeeper.service
@@ -10,14 +10,13 @@
     - Reload systemd
   when: ansible_service_mgr == 'systemd'
 
-- name: Copy Zookeeper init script
+- name: Install Zookeeper Upstart file
   template:
-    src: zookeeper.upstart.conf.j2
-    dest: "/etc/init/zookeeper.conf"
-    mode: "0644"
-    owner: "root"
-    group: "root"
-  register: upstart_init
+    src: zookeeper.upstart.service.j2
+    dest: /etc/init/zookeeper.conf
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart zookeeper
   when: ansible_service_mgr == 'upstart'
@@ -31,28 +30,28 @@
 
 - name: Setup zoo.cfg
   template:
-    dest: "{{zookeeper_conf_dir}}/zoo.cfg"
+    dest: "{{ zookeeper_conf_dir }}/zoo.cfg"
     src: zoo.cfg.j2
   notify:
     - restart zookeeper
 
 - name: Setup myid
   template:
-    dest: "{{zookeeper_conf_dir}}/myid"
+    dest: "{{ zookeeper_conf_dir }}/myid"
     src: myid.j2
   notify:
     - restart zookeeper
 
 - name: Setup environment
   template:
-    dest: "{{zookeeper_conf_dir}}/environment"
+    dest: "{{ zookeeper_conf_dir }}/environment"
     src: environment.j2
   notify:
     - restart zookeeper
 
 - name: Setup log4j
   template:
-    dest: "{{zookeeper_conf_dir}}/log4j.properties"
+    dest: "{{ zookeeper_conf_dir }}/log4j.properties"
     owner: root
     group: root
     mode: 0644

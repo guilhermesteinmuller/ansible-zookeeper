@@ -1,0 +1,15 @@
+---
+- hosts: all
+  gather_facts: no
+  pre_tasks:
+    - name: Run apt-get update
+      changed_when: false
+      raw: apt-get update
+    - name: Install python2
+      changed_when: false
+      raw: apt-get -y install python-simplejson
+    - name: Gather facts
+      setup:
+        gather_subset: all
+  roles:
+    - role: ../ansible-zookeeper

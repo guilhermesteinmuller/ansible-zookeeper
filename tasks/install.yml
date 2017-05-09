@@ -1,10 +1,10 @@
 ---
 - name: Install Systems Requirements
   apt:
-    name: '{{ item }}'
+    name: "{{ item }}"
     state: present
   with_items:
-    - '{{ zookeeper_dependencies }}'
+    - "{{ zookeeper_dependencies }}"
 
 - name: Create Distribution directory
   file:
