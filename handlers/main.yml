@@ -10,4 +10,3 @@
   service:
     name: zookeeper
     state: restarted
-
