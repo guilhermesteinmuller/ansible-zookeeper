@@ -8,6 +8,7 @@
     mode: 0644
   notify:
     - Reload systemd
+    - Restart zookeeper
   when: ansible_service_mgr == 'systemd'
 
 - name: Install Zookeeper Upstart file
@@ -18,36 +19,30 @@
     group: root
     mode: 0644
   notify:
-    - restart zookeeper
+    - Reload upstart
+    - Restart zookeeper
   when: ansible_service_mgr == 'upstart'
-
-- name: Reload init scripts
-  shell: |
-    initctl reload-configuration
-  when: upstart_init | changed
-  notify:
-    - restart zookeeper
 
 - name: Setup zoo.cfg
   template:
     dest: "{{ zookeeper_conf_dir }}/zoo.cfg"
     src: zoo.cfg.j2
   notify:
-    - restart zookeeper
+    - Restart zookeeper
 
 - name: Setup myid
   template:
     dest: "{{ zookeeper_conf_dir }}/myid"
     src: myid.j2
   notify:
-    - restart zookeeper
+    - Restart zookeeper
 
 - name: Setup environment
   template:
     dest: "{{ zookeeper_conf_dir }}/environment"
     src: environment.j2
   notify:
-    - restart zookeeper
+    - Restart zookeeper
 
 - name: Setup log4j
   template:
@@ -57,6 +52,6 @@
     mode: 0644
     src: log4j.properties.j2
   notify:
-    - restart zookeeper
+    - Restart zookeeper
 
 - meta: flush_handlers

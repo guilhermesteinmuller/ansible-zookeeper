@@ -1,8 +1,13 @@
 ---
-- name: restart zookeeper
+
+- name: Reload upstart
+  command: initctl reload-configuration
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+
+- name: Restart zookeeper
   service:
     name: zookeeper
     state: restarted
 
-- name: Reload systemd
-  command: systemctl daemon-reload
