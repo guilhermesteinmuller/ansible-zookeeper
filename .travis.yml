@@ -8,7 +8,7 @@ python: 2.7
 
 env:
   matrix:
-  - ANSIBLE_VERSION=2.4.2.0   ANSIBLE_EXTRA_VARS="kafka_version=0.11.0.2"
+  - ANSIBLE_VERSION=2.4.2.0  ANSIBLE_EXTRA_VARS=""
 
 
 before_install:
