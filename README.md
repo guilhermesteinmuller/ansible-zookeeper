@@ -2,7 +2,7 @@
 #Zookeeper
 Installs [zookeeper](http://zookeeper.apache.org/)
 
-[![Build Status](https://travis-ci.org/adriensaladin/ansible-zookeeper.svg?branch=master)](https://travis-ci.org/adriensaladin/ansible-zookeeper)
+[![Build Status](https://travis-ci.org/Chillisystems/ansible-zookeeper.svg?branch=master)](https://travis-ci.org/Chillisystems/ansible-zookeeper)
 
 
 ##Requirements
