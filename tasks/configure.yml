@@ -13,7 +13,7 @@
 
 - name: Install Zookeeper Upstart file
   template:
-    src: zookeeper.upstart.service.j2
+    src: zookeeper.upstart.conf.j2
     dest: /etc/init/zookeeper.conf
     owner: root
     group: root
