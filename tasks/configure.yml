@@ -32,7 +32,7 @@
 
 - name: Setup myid
   template:
-    dest: "{{ zookeeper_conf_dir }}/myid"
+    dest: "{{ zookeeper_data_dir }}/myid"
     src: myid.j2
   notify:
     - Restart zookeeper
