@@ -1,6 +1,6 @@
 ---
 - name: Install Systems Requirements
-  apt:
+  package:
     name: "{{ item }}"
     state: present
   with_items:
