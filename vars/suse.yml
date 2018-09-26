@@ -1,4 +1,7 @@
 ---
 
 zookeeper_dependencies: java-1_8_0-openjdk-devel
-zookeeper_distro_packages: unzip
+zookeeper_distro_packages:
+  - gzip
+  - unzip
+  - tar
